@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>College Girl Birthday Scrapbook</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Patrick+Hand&family=Shadows+Into+Light&family=Caveat&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Patrick+Hand&family=Shadows+Into+Light&family=Caveat&family=Pacifico&display=swap" rel="stylesheet">
     <style>
         * {
             margin: 0;
@@ -55,7 +55,7 @@
             position: absolute;
             width: 100%;
             height: 100%;
-            background: linear-gradient(135deg, #ff9ec0, #ff6b9c);
+            background: radial-gradient(circle at center, #ff9ec0, #ff6b9c, #ff4d87);
             display: flex;
             flex-direction: column;
             justify-content: center;
@@ -67,6 +67,18 @@
             transform-origin: left center;
             border-radius: 10px;
             box-shadow: 0 0 30px rgba(0,0,0,0.3);
+            overflow: hidden;
+        }
+        
+        .book-cover::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="100" height="100" viewBox="0 0 100 100"><circle cx="20" cy="20" r="2" fill="rgba(255,255,255,0.2)"/><circle cx="50" cy="50" r="1.5" fill="rgba(255,255,255,0.2)"/><circle cx="80" cy="30" r="2.5" fill="rgba(255,255,255,0.2)"/><circle cx="70" cy="70" r="1.8" fill="rgba(255,255,255,0.2)"/></svg>');
+            opacity: 0.5;
         }
         
         .book-cover.closed {
@@ -77,12 +89,36 @@
             transform: perspective(1500px) rotateY(-180deg);
         }
         
+        .cover-content {
+            position: relative;
+            z-index: 2;
+            padding: 20px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 20px;
+            backdrop-filter: blur(5px);
+            border: 3px solid rgba(255, 255, 255, 0.3);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            max-width: 90%;
+        }
+        
         .cover-title {
-            font-family: 'Dancing Script', cursive;
+            font-family: 'Pacifico', cursive;
             font-size: 4.5rem;
             color: white;
             text-shadow: 3px 3px 6px rgba(0,0,0,0.3);
             margin-bottom: 20px;
+            letter-spacing: 1px;
+            position: relative;
+        }
+        
+        .cover-title::after {
+            content: "";
+            display: block;
+            width: 200px;
+            height: 4px;
+            background: rgba(255, 255, 255, 0.7);
+            margin: 15px auto;
+            border-radius: 2px;
         }
         
         .cover-subtitle {
@@ -92,35 +128,123 @@
             margin-bottom: 40px;
             max-width: 600px;
             text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
+            line-height: 1.4;
+        }
+        
+        .celebration-container {
+            display: flex;
+            justify-content: center;
+            gap: 40px;
+            margin: 30px 0;
+            flex-wrap: wrap;
         }
         
         .cake-icon {
             font-size: 8rem;
             color: white;
-            margin: 30px 0;
             text-shadow: 3px 3px 6px rgba(0,0,0,0.3);
             animation: float 3s ease-in-out infinite;
+            position: relative;
+            z-index: 2;
+        }
+        
+        .gift-icon {
+            font-size: 5rem;
+            color: white;
+            animation: pulse 2s infinite;
+            position: relative;
+            z-index: 2;
         }
         
         .open-btn {
-            background: white;
+            background: linear-gradient(to right, #ffd700, #ffa500);
             border: none;
-            padding: 15px 50px;
+            padding: 18px 60px;
             border-radius: 50px;
             font-family: 'Patrick Hand', cursive;
             font-size: 1.8rem;
-            color: #ff6b9c;
+            color: #8b0000;
             cursor: pointer;
             margin-top: 20px;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
-            transition: all 0.3s ease;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.3);
+            transition: all 0.4s ease;
+            position: relative;
+            z-index: 2;
+            border: 3px solid rgba(255, 255, 255, 0.5);
+            letter-spacing: 1px;
+            font-weight: bold;
         }
         
         .open-btn:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 8px 20px rgba(0,0,0,0.3);
+            transform: translateY(-5px) scale(1.05);
+            box-shadow: 0 12px 25px rgba(0,0,0,0.4);
+            background: linear-gradient(to right, #ffa500, #ff8c00);
         }
         
+        .open-btn:active {
+            transform: translateY(0) scale(0.98);
+        }
+        
+        .balloon {
+            position: absolute;
+            z-index: 1;
+            font-size: 3rem;
+            animation: floatBalloon 8s ease-in-out infinite;
+        }
+        
+        .balloon:nth-child(1) { top: 10%; left: 5%; color: #ff6b6b; animation-delay: 0s; }
+        .balloon:nth-child(2) { top: 20%; right: 8%; color: #4ecdc4; animation-delay: 1s; }
+        .balloon:nth-child(3) { top: 60%; left: 7%; color: #ffd166; animation-delay: 2s; }
+        .balloon:nth-child(4) { top: 50%; right: 5%; color: #6a0572; animation-delay: 3s; }
+        .balloon:nth-child(5) { top: 15%; left: 30%; color: #1a936f; animation-delay: 4s; }
+        .balloon:nth-child(6) { top: 70%; right: 30%; color: #ff6b6b; animation-delay: 5s; }
+        
+        .confetti {
+            position: absolute;
+            width: 15px;
+            height: 15px;
+            background: #ffd700;
+            animation: fall 5s linear infinite;
+            opacity: 0.7;
+            z-index: 1;
+        }
+        
+        .confetti:nth-child(7) { left: 10%; animation-delay: 0s; background: #ff6b6b; }
+        .confetti:nth-child(8) { left: 20%; animation-delay: 1s; background: #4ecdc4; }
+        .confetti:nth-child(9) { left: 30%; animation-delay: 2s; background: #ffd166; }
+        .confetti:nth-child(10) { left: 40%; animation-delay: 3s; background: #6a0572; }
+        .confetti:nth-child(11) { left: 50%; animation-delay: 4s; background: #1a936f; }
+        .confetti:nth-child(12) { left: 60%; animation-delay: 0.5s; background: #ff6b6b; }
+        .confetti:nth-child(13) { left: 70%; animation-delay: 1.5s; background: #4ecdc4; }
+        .confetti:nth-child(14) { left: 80%; animation-delay: 2.5s; background: #ffd166; }
+        .confetti:nth-child(15) { left: 90%; animation-delay: 3.5s; background: #6a0572; }
+        
+        @keyframes float {
+            0% { transform: translateY(0) rotate(0deg); }
+            50% { transform: translateY(-15px) rotate(5deg); }
+            100% { transform: translateY(0) rotate(0deg); }
+        }
+        
+        @keyframes floatBalloon {
+            0% { transform: translateY(0) translateX(0) rotate(0deg); }
+            25% { transform: translateY(-30px) translateX(15px) rotate(5deg); }
+            50% { transform: translateY(-15px) translateX(-10px) rotate(-5deg); }
+            75% { transform: translateY(-40px) translateX(5px) rotate(3deg); }
+            100% { transform: translateY(0) translateX(0) rotate(0deg); }
+        }
+        
+        @keyframes fall {
+            0% { transform: translateY(-100px) rotate(0deg); opacity: 1; }
+            100% { transform: translateY(700px) rotate(360deg); opacity: 0; }
+        }
+        
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+            100% { transform: scale(1); }
+        }
+        
+        /* Pages Container - Existing styles */
         .pages-container {
             display: flex;
             width: 100%;
@@ -147,12 +271,6 @@
         @keyframes fadeIn {
             from { opacity: 0; transform: translateY(20px); }
             to { opacity: 1; transform: translateY(0); }
-        }
-        
-        @keyframes float {
-            0% { transform: translateY(0); }
-            50% { transform: translateY(-15px); }
-            100% { transform: translateY(0); }
         }
         
         .page-header {
@@ -439,12 +557,6 @@
             animation: pulse 2s infinite;
         }
         
-        @keyframes pulse {
-            0% { transform: scale(1); }
-            50% { transform: scale(1.1); }
-            100% { transform: scale(1); }
-        }
-        
         @media (max-width: 768px) {
             .scrapbook {
                 height: 550px;
@@ -458,6 +570,32 @@
                 font-size: 1.8rem;
             }
             
+            .cover-content {
+                padding: 15px;
+            }
+            
+            .celebration-container {
+                gap: 20px;
+                margin: 20px 0;
+            }
+            
+            .cake-icon {
+                font-size: 6rem;
+            }
+            
+            .gift-icon {
+                font-size: 4rem;
+            }
+            
+            .open-btn {
+                padding: 15px 40px;
+                font-size: 1.6rem;
+            }
+            
+            .balloon {
+                font-size: 2.5rem;
+            }
+            
             .page-title {
                 font-size: 2.5rem;
             }
@@ -466,16 +604,80 @@
                 grid-template-columns: repeat(2, 1fr);
             }
         }
+        
+        @media (max-width: 480px) {
+            .scrapbook {
+                height: 500px;
+            }
+            
+            .cover-title {
+                font-size: 2.8rem;
+            }
+            
+            .cover-subtitle {
+                font-size: 1.5rem;
+            }
+            
+            .celebration-container {
+                gap: 15px;
+            }
+            
+            .cake-icon {
+                font-size: 5rem;
+            }
+            
+            .gift-icon {
+                font-size: 3.5rem;
+            }
+            
+            .open-btn {
+                padding: 12px 30px;
+                font-size: 1.4rem;
+            }
+            
+            .balloon {
+                font-size: 2rem;
+            }
+        }
     </style>
 </head>
 <body>
     <div class="scrapbook">
-        <!-- Book Cover -->
+        <!-- Enhanced Book Cover -->
         <div class="book-cover closed" id="book-cover">
-            <h1 class="cover-title">Happy Birthday Chloe!</h1>
-            <p class="cover-subtitle">A Special Scrapbook For An Amazing College Girl</p>
-            <div class="cake-icon">🎂</div>
-            <button class="open-btn" id="open-book">Open Scrapbook</button>
+            <!-- Balloons -->
+            <div class="balloon">🎈</div>
+            <div class="balloon">🎈</div>
+            <div class="balloon">🎈</div>
+            <div class="balloon">🎈</div>
+            <div class="balloon">🎈</div>
+            <div class="balloon">🎈</div>
+            
+            <!-- Confetti -->
+            <div class="confetti"></div>
+            <div class="confetti"></div>
+            <div class="confetti"></div>
+            <div class="confetti"></div>
+            <div class="confetti"></div>
+            <div class="confetti"></div>
+            <div class="confetti"></div>
+            <div class="confetti"></div>
+            <div class="confetti"></div>
+            
+            <div class="cover-content">
+                <h1 class="cover-title">Happy Birthday Chloe!</h1>
+                <p class="cover-subtitle">A Special Scrapbook For An Amazing College Girl</p>
+                
+                <div class="celebration-container">
+                    <div class="gift-icon">🎁</div>
+                    <div class="cake-icon">🎂</div>
+                    <div class="gift-icon">🎁</div>
+                </div>
+                
+                <button class="open-btn" id="open-book">
+                    <i class="fas fa-book-open"></i> Open Scrapbook
+                </button>
+            </div>
         </div>
         
         <!-- Pages Container -->
@@ -684,14 +886,20 @@
             
             // Open the book
             openBtn.addEventListener('click', function() {
-                bookCover.classList.remove('closed');
-                bookCover.classList.add('open');
+                // Add confetti effect when opening
+                createConfetti();
                 
-                // Show navigation after a delay
+                // Open after a short delay
                 setTimeout(() => {
-                    document.querySelector('.navigation').style.display = 'flex';
-                    document.querySelector('.page-counter').style.display = 'block';
-                }, 800);
+                    bookCover.classList.remove('closed');
+                    bookCover.classList.add('open');
+                    
+                    // Show navigation after a delay
+                    setTimeout(() => {
+                        document.querySelector('.navigation').style.display = 'flex';
+                        document.querySelector('.page-counter').style.display = 'block';
+                    }, 800);
+                }, 500);
             });
             
             // Navigate between pages
@@ -750,6 +958,43 @@
                     goToPage(currentPage + 1);
                 }
             });
+            
+            // Function to create confetti effect
+            function createConfetti() {
+                const confettiCount = 50;
+                const container = document.querySelector('.book-cover');
+                
+                for (let i = 0; i < confettiCount; i++) {
+                    const confetti = document.createElement('div');
+                    confetti.className = 'confetti';
+                    
+                    // Random position
+                    confetti.style.left = Math.random() * 100 + '%';
+                    
+                    // Random colors
+                    const colors = ['#ff6b6b', '#4ecdc4', '#ffd166', '#6a0572', '#1a936f', '#ffd700'];
+                    confetti.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+                    
+                    // Random size
+                    const size = Math.random() * 10 + 5;
+                    confetti.style.width = size + 'px';
+                    confetti.style.height = size + 'px';
+                    
+                    // Random rotation
+                    confetti.style.transform = `rotate(${Math.random() * 360}deg)`;
+                    
+                    // Random animation duration
+                    const duration = Math.random() * 3 + 2;
+                    confetti.style.animation = `fall ${duration}s linear forwards`;
+                    
+                    container.appendChild(confetti);
+                    
+                    // Remove after animation completes
+                    setTimeout(() => {
+                        confetti.remove();
+                    }, duration * 1000);
+                }
+            }
         });
     </script>
 </body>
