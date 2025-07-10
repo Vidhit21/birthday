@@ -1,969 +1,1317 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Responsive Birthday Scrapbook</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Patrick+Hand&family=Shadows+Into+Light&family=Caveat&family=Pacifico&display=swap" rel="stylesheet">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Beautiful Birthday Scrapbook</title>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Patrick+Hand&family=Shadows+Into+Light&family=Caveat&family=Pacifico&display=swap"
+      rel="stylesheet"
+    />
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      body {
+        background: linear-gradient(135deg, #ffd1dc, #a2d2ff);
+        min-height: 100vh;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        font-family: "Patrick Hand", cursive;
+        padding: 20px;
+        position: relative;
+        overflow-x: hidden;
+      }
+
+      body::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="100" height="100" viewBox="0 0 100 100"><circle cx="20" cy="20" r="3" fill="rgba(255,255,255,0.3)"/><circle cx="50" cy="50" r="2" fill="rgba(255,255,255,0.3)"/><circle cx="80" cy="30" r="4" fill="rgba(255,255,255,0.3)"/><circle cx="70" cy="70" r="3" fill="rgba(255,255,255,0.3)"/></svg>');
+        opacity: 0.3;
+        z-index: -1;
+      }
+
+      .scrapbook {
+        width: 95%;
+        max-width: 900px;
+        min-height: 90vh;
+        height: 1000px;
+        background: #fffaf0;
+        border-radius: 10px;
+        box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+        position: relative;
+        overflow: hidden;
+        display: flex;
+        flex-direction: column;
+        border: min(2vw, 15px) solid #d4a76a;
+      }
+
+      .book-cover {
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        background: radial-gradient(
+          circle at center,
+          #ff9ec0,
+          #ff6b9c,
+          #ff4d87
+        );
+        display: grid;
+        grid-template-rows: 1fr auto 1fr;
+        justify-content: center;
+        align-items: center;
+        text-align: center;
+        padding: min(5vw, 40px);
+        z-index: 10;
+        transition: transform 1s ease;
+        transform-origin: left center;
+        border-radius: 10px;
+        box-shadow: 0 0 30px rgba(0, 0, 0, 0.3);
+        overflow: hidden;
+      }
+
+      .book-cover::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="100" height="100" viewBox="0 0 100 100"><circle cx="20" cy="20" r="2" fill="rgba(255,255,255,0.2)"/><circle cx="50" cy="50" r="1.5" fill="rgba(255,255,255,0.2)"/><circle cx="80" cy="30" r="2.5" fill="rgba(255,255,255,0.2)"/><circle cx="70" cy="70" r="1.8" fill="rgba(255,255,255,0.2)"/></svg>');
+        opacity: 0.5;
+      }
+
+      .book-cover.closed {
+        transform: perspective(1500px) rotateY(0deg);
+      }
+
+      .book-cover.open {
+        transform: perspective(1500px) rotateY(-180deg);
+      }
+
+      .cover-content {
+        position: relative;
+        z-index: 2;
+        padding: min(3vw, 20px);
+        background: rgba(255, 255, 255, 0.1);
+        border-radius: 20px;
+        backdrop-filter: blur(5px);
+        border: 3px solid rgba(255, 255, 255, 0.3);
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        max-width: 90%;
+        margin: 0 auto;
+        width: 100%;
+      }
+
+      .cover-title {
+        font-family: "Pacifico", cursive;
+        font-size: clamp(2.5rem, 7vw, 4.5rem);
+        color: white;
+        text-shadow: 3px 3px 6px rgba(0, 0, 0, 0.3);
+        margin-bottom: clamp(10px, 2vw, 20px);
+        letter-spacing: 1px;
+        position: relative;
+        line-height: 1.2;
+      }
+
+      .cover-title::after {
+        content: "";
+        display: block;
+        width: min(50vw, 200px);
+        height: clamp(2px, 0.5vw, 4px);
+        background: rgba(255, 255, 255, 0.7);
+        margin: clamp(5px, 1.5vw, 15px) auto;
+        border-radius: 2px;
+      }
+
+      .cover-subtitle {
+        font-family: "Shadows Into Light", cursive;
+        font-size: clamp(1.5rem, 3.5vw, 2.2rem);
+        color: #fff;
+        margin-bottom: clamp(20px, 4vw, 40px);
+        max-width: 90%;
+        text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+        line-height: 1.4;
+        margin-left: auto;
+        margin-right: auto;
+      }
+
+      .celebration-container {
+        display: flex;
+        justify-content: center;
+        gap: clamp(15px, 4vw, 40px);
+        margin: clamp(15px, 3vw, 30px) 0;
+        flex-wrap: wrap;
+      }
+
+      .cake-icon {
+        font-size: clamp(4rem, 12vw, 8rem);
+        color: white;
+        text-shadow: 3px 3px 6px rgba(0, 0, 0, 0.3);
+        animation: float 3s ease-in-out infinite;
+        position: relative;
+        z-index: 2;
+        flex-shrink: 0;
+      }
+
+      .gift-icon {
+        font-size: clamp(3rem, 8vw, 5rem);
+        color: white;
+        animation: pulse 2s infinite;
+        position: relative;
+        z-index: 2;
+        flex-shrink: 0;
+      }
+
+      .open-btn {
+        background: linear-gradient(to right, #ffd700, #ffa500);
+        border: none;
+        padding: clamp(10px, 1.8vw, 18px) clamp(30px, 6vw, 60px);
+        border-radius: 50px;
+        font-family: "Patrick Hand", cursive;
+        font-size: clamp(1.2rem, 2.2vw, 1.8rem);
+        color: #8b0000;
+        cursor: pointer;
+        margin-top: clamp(10px, 2vw, 20px);
+        box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+        transition: all 0.4s ease;
+        position: relative;
+        z-index: 2;
+        border: 3px solid rgba(255, 255, 255, 0.5);
+        letter-spacing: 1px;
+        font-weight: bold;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 10px;
+      }
+
+      .open-btn:hover {
+        transform: translateY(-5px) scale(1.05);
+        box-shadow: 0 12px 25px rgba(0, 0, 0, 0.4);
+        background: linear-gradient(to right, #ffa500, #ff8c00);
+      }
+
+      .open-btn:active {
+        transform: translateY(0) scale(0.98);
+      }
+
+      .balloon {
+        position: absolute;
+        z-index: 1;
+        font-size: clamp(2rem, 4vw, 3rem);
+        animation: floatBalloon 8s ease-in-out infinite;
+      }
+
+      .balloon:nth-child(1) {
+        top: 10%;
+        left: 5%;
+        color: #ff6b6b;
+        animation-delay: 0s;
+      }
+      .balloon:nth-child(2) {
+        top: 20%;
+        right: 8%;
+        color: #4ecdc4;
+        animation-delay: 1s;
+      }
+      .balloon:nth-child(3) {
+        top: 60%;
+        left: 7%;
+        color: #ffd166;
+        animation-delay: 2s;
+      }
+      .balloon:nth-child(4) {
+        top: 50%;
+        right: 5%;
+        color: #6a0572;
+        animation-delay: 3s;
+      }
+      .balloon:nth-child(5) {
+        top: 15%;
+        left: 30%;
+        color: #1a936f;
+        animation-delay: 4s;
+      }
+      .balloon:nth-child(6) {
+        top: 70%;
+        right: 30%;
+        color: #ff6b6b;
+        animation-delay: 5s;
+      }
+
+      .confetti {
+        position: absolute;
+        width: clamp(8px, 1.5vw, 15px);
+        height: clamp(8px, 1.5vw, 15px);
+        background: #ffd700;
+        animation: fall 5s linear infinite;
+        opacity: 0.7;
+        z-index: 1;
+      }
+
+      .confetti:nth-child(7) {
+        left: 10%;
+        animation-delay: 0s;
+        background: #ff6b6b;
+      }
+      .confetti:nth-child(8) {
+        left: 20%;
+        animation-delay: 1s;
+        background: #4ecdc4;
+      }
+      .confetti:nth-child(9) {
+        left: 30%;
+        animation-delay: 2s;
+        background: #ffd166;
+      }
+      .confetti:nth-child(10) {
+        left: 40%;
+        animation-delay: 3s;
+        background: #6a0572;
+      }
+      .confetti:nth-child(11) {
+        left: 50%;
+        animation-delay: 4s;
+        background: #1a936f;
+      }
+      .confetti:nth-child(12) {
+        left: 60%;
+        animation-delay: 0.5s;
+        background: #ff6b6b;
+      }
+      .confetti:nth-child(13) {
+        left: 70%;
+        animation-delay: 1.5s;
+        background: #4ecdc4;
+      }
+      .confetti:nth-child(14) {
+        left: 80%;
+        animation-delay: 2.5s;
+        background: #ffd166;
+      }
+      .confetti:nth-child(15) {
+        left: 90%;
+        animation-delay: 3.5s;
+        background: #6a0572;
+      }
+
+      @keyframes float {
+        0% {
+          transform: translateY(0) rotate(0deg);
         }
-        
-        body {
-            background: linear-gradient(135deg, #ffd1dc, #a2d2ff);
-            min-height: 100vh;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            font-family: 'Patrick Hand', cursive;
-            padding: 20px;
-            position: relative;
-            overflow-x: hidden;
+        50% {
+          transform: translateY(-15px) rotate(5deg);
         }
-        
-        body::before {
-            content: "";
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="100" height="100" viewBox="0 0 100 100"><circle cx="20" cy="20" r="3" fill="rgba(255,255,255,0.3)"/><circle cx="50" cy="50" r="2" fill="rgba(255,255,255,0.3)"/><circle cx="80" cy="30" r="4" fill="rgba(255,255,255,0.3)"/><circle cx="70" cy="70" r="3" fill="rgba(255,255,255,0.3)"/></svg>');
-            opacity: 0.3;
-            z-index: -1;
+        100% {
+          transform: translateY(0) rotate(0deg);
         }
-        
+      }
+
+      @keyframes floatBalloon {
+        0% {
+          transform: translateY(0) translateX(0) rotate(0deg);
+        }
+        25% {
+          transform: translateY(-30px) translateX(15px) rotate(5deg);
+        }
+        50% {
+          transform: translateY(-15px) translateX(-10px) rotate(-5deg);
+        }
+        75% {
+          transform: translateY(-40px) translateX(5px) rotate(3deg);
+        }
+        100% {
+          transform: translateY(0) translateX(0) rotate(0deg);
+        }
+      }
+
+      @keyframes fall {
+        0% {
+          transform: translateY(-100px) rotate(0deg);
+          opacity: 1;
+        }
+        100% {
+          transform: translateY(700px) rotate(360deg);
+          opacity: 0;
+        }
+      }
+
+      @keyframes pulse {
+        0% {
+          transform: scale(1);
+        }
+        50% {
+          transform: scale(1.1);
+        }
+        100% {
+          transform: scale(1);
+        }
+      }
+
+      /* Pages Container */
+      .pages-container {
+        display: flex;
+        width: 100%;
+        height: 100%;
+        position: relative;
+      }
+
+      .page {
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        background: #fffaf0;
+        padding: min(5vw, 40px);
+        display: none;
+        overflow-y: auto;
+        background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="100" height="100" viewBox="0 0 100 100"><rect x="0" y="0" width="100" height="100" fill="none" stroke="rgba(180,180,180,0.1)" stroke-width="1"/></svg>');
+      }
+
+      .page.active {
+        display: block;
+        animation: fadeIn 0.8s ease;
+      }
+
+      @keyframes fadeIn {
+        from {
+          opacity: 0;
+          transform: translateY(20px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      .page-header {
+        text-align: center;
+        margin-bottom: min(4vw, 30px);
+        position: relative;
+      }
+
+      .page-title {
+        font-family: "Dancing Script", cursive;
+        font-size: clamp(2rem, 4vw, 3rem);
+        color: #d14e72;
+        display: inline-block;
+        background: linear-gradient(to bottom, #ffdde1, #f9c5d1);
+        padding: min(1vw, 10px) min(5vw, 40px);
+        border-radius: 50px;
+        border: min(0.3vw, 3px) dotted #d14e72;
+      }
+
+      .page-content {
+        display: flex;
+        flex-direction: column;
+        gap: min(3vw, 30px);
+      }
+
+      .wish-card {
+        order: 2; /* Move below images */
+        margin-top: min(3vw, 20px);
+      }
+
+      .wish-text {
+        font-size: clamp(1.2rem, 2vw, 1.5rem);
+        line-height: 1.6;
+        color: #555;
+        margin-bottom: clamp(8px, 1.5vw, 15px);
+        font-family: "Caveat", cursive;
+      }
+
+      .wish-author {
+        text-align: right;
+        font-style: italic;
+        color: #ff6b9c;
+        font-weight: bold;
+        font-size: clamp(1rem, 2vw, 1.3rem);
+      }
+
+      .quote-card {
+        order: 1; /* Move above images */
+        margin-bottom: min(3vw, 20px);
+      }
+
+      .quote-text {
+        font-size: clamp(1.4rem, 2.5vw, 1.8rem);
+        line-height: 1.6;
+        color: #555;
+        font-family: "Shadows Into Light", cursive;
+        margin-bottom: clamp(8px, 1.5vw, 15px);
+      }
+
+      .quote-author {
+        text-align: right;
+        font-style: italic;
+        color: #d14e72;
+        font-weight: bold;
+        font-size: clamp(1rem, 2vw, 1.2rem);
+      }
+
+      .photo-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+        gap: min(3vw, 20px);
+        margin: min(3vw, 20px) auto;
+        max-width: 90%;
+      }
+
+      .photo-frame {
+        height: clamp(100px, 20vw, 150px);
+        background: linear-gradient(135deg, #c7d2fe, #ddd6fe);
+        border-radius: 8px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        font-size: clamp(2rem, 4vw, 3rem);
+        color: #7e22ce;
+        position: relative;
+        overflow: hidden;
+        transform: rotate(-2deg);
+        box-shadow: 3px 3px 8px rgba(0, 0, 0, 0.1);
+      }
+
+      .photo-frame:nth-child(even) {
+        transform: rotate(2deg);
+      }
+
+      .photo-frame::before {
+        content: "";
+        position: absolute;
+        top: 5px;
+        left: 5px;
+        right: 5px;
+        bottom: 5px;
+        border: clamp(1px, 0.3vw, 2px) dashed #7e22ce;
+        border-radius: 6px;
+      }
+
+      .memory-item {
+        background: white;
+        padding: min(4vw, 25px);
+        border-radius: 10px;
+        border-left: clamp(5px, 1.5vw, 8px) solid #fcd34d;
+        box-shadow: 3px 3px 10px rgba(0, 0, 0, 0.1);
+        max-width: 90%;
+        margin: 0 auto;
+      }
+
+      .memory-title {
+        font-size: clamp(1.4rem, 2.5vw, 1.8rem);
+        color: #ff6b9c;
+        margin-bottom: clamp(5px, 1vw, 10px);
+        font-family: "Shadows Into Light", cursive;
+      }
+
+      .memory-content {
+        font-size: clamp(1.1rem, 2vw, 1.4rem);
+        color: #555;
+        line-height: 1.6;
+      }
+
+      .sticker {
+        position: absolute;
+        font-size: clamp(1.8rem, 4vw, 3rem);
+        opacity: 0.7;
+        z-index: 0;
+        animation: float 4s ease-in-out infinite;
+      }
+
+      .sticker-1 {
+        top: 10%;
+        left: 10%;
+        color: #f87171;
+        animation-delay: 0s;
+      }
+      .sticker-2 {
+        top: 15%;
+        right: 15%;
+        color: #60a5fa;
+        animation-delay: 0.5s;
+      }
+      .sticker-3 {
+        bottom: 20%;
+        left: 20%;
+        color: #fbbf24;
+        animation-delay: 1s;
+      }
+      .sticker-4 {
+        bottom: 15%;
+        right: 10%;
+        color: #34d399;
+        animation-delay: 1.5s;
+      }
+
+      .tape {
+        position: absolute;
+        width: clamp(50px, 10vw, 80px);
+        height: clamp(15px, 3.5vw, 30px);
+        background: rgba(255, 255, 255, 0.7);
+        opacity: 0.8;
+        transform: rotate(-45deg);
+        z-index: 5;
+      }
+
+      .tape-1 {
+        top: -15px;
+        left: 30%;
+      }
+      .tape-2 {
+        top: -15px;
+        right: 30%;
+      }
+
+      .navigation {
+        position: absolute;
+        bottom: min(3vw, 20px);
+        left: 0;
+        right: 0;
+        display: flex;
+        justify-content: center;
+        gap: min(3vw, 20px);
+        z-index: 10;
+      }
+
+      .nav-btn {
+        background: linear-gradient(to bottom, #f9a8d4, #f472b6);
+        border: none;
+        color: white;
+        font-family: "Patrick Hand", cursive;
+        font-size: clamp(1rem, 2vw, 1.4rem);
+        padding: clamp(8px, 1.5vw, 12px) clamp(20px, 4vw, 30px);
+        border-radius: 30px;
+        cursor: pointer;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        transition: all 0.3s ease;
+      }
+
+      .nav-btn:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+      }
+
+      .nav-btn:disabled {
+        opacity: 0.5;
+        cursor: not-allowed;
+        transform: none;
+      }
+
+      .page-counter {
+        position: absolute;
+        bottom: min(3vw, 25px);
+        right: min(3vw, 25px);
+        background: rgba(255, 255, 255, 0.7);
+        padding: clamp(5px, 1vw, 8px) clamp(10px, 3vw, 20px);
+        border-radius: 20px;
+        font-size: clamp(1rem, 2vw, 1.3rem);
+        color: #d14e72;
+        font-weight: bold;
+      }
+
+      .fun-fact {
+        background: white;
+        padding: min(3vw, 20px);
+        border-radius: 10px;
+        border: clamp(1px, 0.5vw, 3px) dotted #a2d2ff;
+        max-width: 90%;
+        margin: 0 auto;
+        text-align: center;
+      }
+
+      .fact-title {
+        font-size: clamp(1.4rem, 2.5vw, 1.8rem);
+        color: #ff6b9c;
+        margin-bottom: clamp(5px, 1vw, 10px);
+        font-family: "Shadows Into Light", cursive;
+      }
+
+      .fact-content {
+        font-size: clamp(1.1rem, 2vw, 1.4rem);
+        color: #555;
+        line-height: 1.6;
+      }
+
+      .gift-box {
+        text-align: center;
+        margin: min(3vw, 20px) 0;
+      }
+
+      .gift-icon {
+        font-size: clamp(3rem, 8vw, 5rem);
+        color: #ff6b9c;
+        animation: pulse 2s infinite;
+      }
+
+      /* Image gallery */
+      .image-gallery {
+        display: grid;
+        grid-template-columns: 1fr;
+        gap: min(4vw, 30px);
+        margin: min(4vw, 30px) auto;
+        max-width: 95%;
+      }
+
+      .polaroid {
+        background: white;
+        padding: min(2vw, 15px);
+        border-radius: 8px;
+        box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+        transform: rotate(var(--rotation));
+        transition: all 0.5s ease;
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+        position: relative;
+        overflow: hidden;
+      }
+
+      .polaroid::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: linear-gradient(
+          to bottom right,
+          rgba(255, 255, 255, 0.3),
+          rgba(255, 182, 193, 0.1)
+        );
+        z-index: 1;
+      }
+
+      .polaroid:hover {
+        transform: rotate(0) scale(1.02);
+        box-shadow: 0 12px 30px rgba(0, 0, 0, 0.2);
+        z-index: 10;
+      }
+
+      .image-container {
+        width: 100%;
+        height: clamp(250px, 45vh, 400px);
+        overflow: hidden;
+        border-radius: 5px;
+        background: linear-gradient(45deg, #f5f7fa, #e4e7eb);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        position: relative;
+      }
+
+      .image-container img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        transition: all 0.8s ease;
+      }
+
+      .polaroid:hover .image-container img {
+        transform: scale(1.05);
+      }
+
+      .image-caption {
+        text-align: center;
+        font-family: "Caveat", cursive;
+        font-size: clamp(1.4rem, 3vw, 1.8rem);
+        color: #d14e72;
+        margin-top: min(2vw, 15px);
+        padding: 0 min(1vw, 5px);
+        font-weight: bold;
+        position: relative;
+        z-index: 2;
+      }
+
+      .image-container::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: linear-gradient(
+          to bottom,
+          rgba(255, 255, 255, 0.1),
+          rgba(0, 0, 0, 0.05)
+        );
+        z-index: 2;
+      }
+
+      .image-container img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        transition: transform 0.5s ease;
+      }
+
+      .polaroid:hover .image-container img {
+        transform: scale(1.05);
+      }
+
+      .image-caption {
+        text-align: center;
+        font-family: "Caveat", cursive;
+        font-size: clamp(1rem, 1.8vw, 1.3rem);
+        color: #555;
+        margin-top: min(1vw, 8px);
+        padding: 0 min(1vw, 5px);
+      }
+
+      .quote-card.romantic {
+        background: linear-gradient(135deg, #fff0f5, #ffeef7);
+        border: clamp(1px, 0.3vw, 2px) dashed #ff6b9c;
+        padding: min(4vw, 30px);
+        margin: min(3vw, 20px) auto;
+        max-width: 90%;
+      }
+
+      .romantic-text {
+        font-size: clamp(1.6rem, 3.5vw, 2.2rem);
+        line-height: 1.5;
+        color: #d14e72;
+        font-family: "Dancing Script", cursive;
+        text-align: center;
+        position: relative;
+        z-index: 2;
+      }
+
+      /* Landscape orientation adjustments */
+      @media (orientation: landscape) and (max-height: 500px) {
         .scrapbook {
-            width: 95%;
-            max-width: 900px;
-            min-height: 90vh;
-            height: 1000px;
-            background: #fffaf0;
-            border-radius: 10px;
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
-            position: relative;
-            overflow: hidden;
-            display: flex;
-            flex-direction: column;
-            /* Responsive border */
-            border: min(2vw, 15px) solid #d4a76a;
+          min-height: 95vh;
         }
-        
-        .book-cover {
-            position: absolute;
-            width: 100%;
-            height: 100%;
-            background: radial-gradient(circle at center, #ff9ec0, #ff6b9c, #ff4d87);
-            display: grid;
-            grid-template-rows: 1fr auto 1fr;
-            justify-content: center;
-            align-items: center;
-            text-align: center;
-            padding: min(5vw, 40px);
-            z-index: 10;
-            transition: transform 1s ease;
-            transform-origin: left center;
-            border-radius: 10px;
-            box-shadow: 0 0 30px rgba(0,0,0,0.3);
-            overflow: hidden;
-        }
-        
-        .book-cover::before {
-            content: "";
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="100" height="100" viewBox="0 0 100 100"><circle cx="20" cy="20" r="2" fill="rgba(255,255,255,0.2)"/><circle cx="50" cy="50" r="1.5" fill="rgba(255,255,255,0.2)"/><circle cx="80" cy="30" r="2.5" fill="rgba(255,255,255,0.2)"/><circle cx="70" cy="70" r="1.8" fill="rgba(255,255,255,0.2)"/></svg>');
-            opacity: 0.5;
-        }
-        
-        .book-cover.closed {
-            transform: perspective(1500px) rotateY(0deg);
-        }
-        
-        .book-cover.open {
-            transform: perspective(1500px) rotateY(-180deg);
-        }
-        
-        .cover-content {
-            position: relative;
-            z-index: 2;
-            padding: min(3vw, 20px);
-            background: rgba(255, 255, 255, 0.1);
-            border-radius: 20px;
-            backdrop-filter: blur(5px);
-            border: 3px solid rgba(255, 255, 255, 0.3);
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
-            max-width: 90%;
-            margin: 0 auto;
-            width: 100%;
-        }
-        
+
         .cover-title {
-            font-family: 'Pacifico', cursive;
-            font-size: clamp(2.5rem, 7vw, 4.5rem);
-            color: white;
-            text-shadow: 3px 3px 6px rgba(0,0,0,0.3);
-            margin-bottom: clamp(10px, 2vw, 20px);
-            letter-spacing: 1px;
-            position: relative;
-            line-height: 1.2;
+          font-size: clamp(2rem, 5vw, 3rem);
+          margin-bottom: 5px;
         }
-        
-        .cover-title::after {
-            content: "";
-            display: block;
-            width: min(50vw, 200px);
-            height: clamp(2px, 0.5vw, 4px);
-            background: rgba(255, 255, 255, 0.7);
-            margin: clamp(5px, 1.5vw, 15px) auto;
-            border-radius: 2px;
-        }
-        
+
         .cover-subtitle {
-            font-family: 'Shadows Into Light', cursive;
-            font-size: clamp(1.5rem, 3.5vw, 2.2rem);
-            color: #fff;
-            margin-bottom: clamp(20px, 4vw, 40px);
-            max-width: 90%;
-            text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
-            line-height: 1.4;
-            margin-left: auto;
-            margin-right: auto;
+          font-size: clamp(1.2rem, 2.5vw, 1.8rem);
+          margin-bottom: 15px;
         }
-        
+
         .celebration-container {
-            display: flex;
-            justify-content: center;
-            gap: clamp(15px, 4vw, 40px);
-            margin: clamp(15px, 3vw, 30px) 0;
-            flex-wrap: wrap;
+          margin: 10px 0;
         }
-        
+
         .cake-icon {
-            font-size: clamp(4rem, 12vw, 8rem);
-            color: white;
-            text-shadow: 3px 3px 6px rgba(0,0,0,0.3);
-            animation: float 3s ease-in-out infinite;
-            position: relative;
-            z-index: 2;
-            flex-shrink: 0;
+          font-size: clamp(3rem, 8vw, 5rem);
         }
-        
-        .gift-icon {
-            font-size: clamp(3rem, 8vw, 5rem);
-            color: white;
-            animation: pulse 2s infinite;
-            position: relative;
-            z-index: 2;
-            flex-shrink: 0;
+      }
+
+      /* Print styles */
+      @media print {
+        body {
+          background: white;
+          padding: 0;
         }
-        
-        .open-btn {
-            background: linear-gradient(to right, #ffd700, #ffa500);
-            border: none;
-            padding: clamp(10px, 1.8vw, 18px) clamp(30px, 6vw, 60px);
-            border-radius: 50px;
-            font-family: 'Patrick Hand', cursive;
-            font-size: clamp(1.2rem, 2.2vw, 1.8rem);
-            color: #8b0000;
-            cursor: pointer;
-            margin-top: clamp(10px, 2vw, 20px);
-            box-shadow: 0 8px 20px rgba(0,0,0,0.3);
-            transition: all 0.4s ease;
-            position: relative;
-            z-index: 2;
-            border: 3px solid rgba(255, 255, 255, 0.5);
-            letter-spacing: 1px;
-            font-weight: bold;
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            gap: 10px;
+
+        .scrapbook {
+          box-shadow: none;
+          border: none;
+          max-width: 100%;
+          height: auto;
         }
-        
-        .open-btn:hover {
-            transform: translateY(-5px) scale(1.05);
-            box-shadow: 0 12px 25px rgba(0,0,0,0.4);
-            background: linear-gradient(to right, #ffa500, #ff8c00);
+
+        .book-cover {
+          position: relative;
+          transform: none !important;
+          box-shadow: none;
+          page-break-after: always;
         }
-        
-        .open-btn:active {
-            transform: translateY(0) scale(0.98);
-        }
-        
-        .balloon {
-            position: absolute;
-            z-index: 1;
-            font-size: clamp(2rem, 4vw, 3rem);
-            animation: floatBalloon 8s ease-in-out infinite;
-        }
-        
-        .balloon:nth-child(1) { top: 10%; left: 5%; color: #ff6b6b; animation-delay: 0s; }
-        .balloon:nth-child(2) { top: 20%; right: 8%; color: #4ecdc4; animation-delay: 1s; }
-        .balloon:nth-child(3) { top: 60%; left: 7%; color: #ffd166; animation-delay: 2s; }
-        .balloon:nth-child(4) { top: 50%; right: 5%; color: #6a0572; animation-delay: 3s; }
-        .balloon:nth-child(5) { top: 15%; left: 30%; color: #1a936f; animation-delay: 4s; }
-        .balloon:nth-child(6) { top: 70%; right: 30%; color: #ff6b6b; animation-delay: 5s; }
-        
-        .confetti {
-            position: absolute;
-            width: clamp(8px, 1.5vw, 15px);
-            height: clamp(8px, 1.5vw, 15px);
-            background: #ffd700;
-            animation: fall 5s linear infinite;
-            opacity: 0.7;
-            z-index: 1;
-        }
-        
-        .confetti:nth-child(7) { left: 10%; animation-delay: 0s; background: #ff6b6b; }
-        .confetti:nth-child(8) { left: 20%; animation-delay: 1s; background: #4ecdc4; }
-        .confetti:nth-child(9) { left: 30%; animation-delay: 2s; background: #ffd166; }
-        .confetti:nth-child(10) { left: 40%; animation-delay: 3s; background: #6a0572; }
-        .confetti:nth-child(11) { left: 50%; animation-delay: 4s; background: #1a936f; }
-        .confetti:nth-child(12) { left: 60%; animation-delay: 0.5s; background: #ff6b6b; }
-        .confetti:nth-child(13) { left: 70%; animation-delay: 1.5s; background: #4ecdc4; }
-        .confetti:nth-child(14) { left: 80%; animation-delay: 2.5s; background: #ffd166; }
-        .confetti:nth-child(15) { left: 90%; animation-delay: 3.5s; background: #6a0572; }
-        
-        @keyframes float {
-            0% { transform: translateY(0) rotate(0deg); }
-            50% { transform: translateY(-15px) rotate(5deg); }
-            100% { transform: translateY(0) rotate(0deg); }
-        }
-        
-        @keyframes floatBalloon {
-            0% { transform: translateY(0) translateX(0) rotate(0deg); }
-            25% { transform: translateY(-30px) translateX(15px) rotate(5deg); }
-            50% { transform: translateY(-15px) translateX(-10px) rotate(-5deg); }
-            75% { transform: translateY(-40px) translateX(5px) rotate(3deg); }
-            100% { transform: translateY(0) translateX(0) rotate(0deg); }
-        }
-        
-        @keyframes fall {
-            0% { transform: translateY(-100px) rotate(0deg); opacity: 1; }
-            100% { transform: translateY(700px) rotate(360deg); opacity: 0; }
-        }
-        
-        @keyframes pulse {
-            0% { transform: scale(1); }
-            50% { transform: scale(1.1); }
-            100% { transform: scale(1); }
-        }
-        
-        /* Pages Container */
-        .pages-container {
-            display: flex;
-            width: 100%;
-            height: 100%;
-            position: relative;
-        }
-        
+
         .page {
-            position: absolute;
-            width: 100%;
-            height: 100%;
-            background: #fffaf0;
-            padding: min(5vw, 40px);
-            display: none;
-            overflow-y: auto;
-            background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="100" height="100" viewBox="0 0 100 100"><rect x="0" y="0" width="100" height="100" fill="none" stroke="rgba(180,180,180,0.1)" stroke-width="1"/></svg>');
+          position: static;
+          display: block !important;
+          page-break-after: always;
         }
-        
-        .page.active {
-            display: block;
-            animation: fadeIn 0.8s ease;
-        }
-        
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(20px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-        
-        .page-header {
-            text-align: center;
-            margin-bottom: min(4vw, 30px);
-            position: relative;
-        }
-        
-        .page-title {
-            font-family: 'Dancing Script', cursive;
-            font-size: clamp(2rem, 4vw, 3rem);
-            color: #d14e72;
-            display: inline-block;
-            background: linear-gradient(to bottom, #ffdde1, #f9c5d1);
-            padding: min(1vw, 10px) min(5vw, 40px);
-            border-radius: 50px;
-            border: min(0.3vw, 3px) dotted #d14e72;
-        }
-        
-        .page-content {
-            display: flex;
-            flex-direction: column;
-            gap: min(4vw, 30px);
-        }
-        
-        .wish-card {
-            background: white;
-            border-radius: 10px;
-            padding: min(4vw, 25px);
-            position: relative;
-            box-shadow: 5px 5px 15px rgba(0,0,0,0.1);
-            border-left: clamp(5px, 1.5vw, 8px) solid #ffb6c1;
-            max-width: 90%;
-            margin: 0 auto;
-        }
-        
-        .wish-text {
-            font-size: clamp(1.2rem, 2vw, 1.5rem);
-            line-height: 1.6;
-            color: #555;
-            margin-bottom: clamp(8px, 1.5vw, 15px);
-            font-family: 'Caveat', cursive;
-        }
-        
-        .wish-author {
-            text-align: right;
-            font-style: italic;
-            color: #ff6b9c;
-            font-weight: bold;
-            font-size: clamp(1rem, 2vw, 1.3rem);
-        }
-        
-        .quote-card {
-            background: linear-gradient(135deg, #fff, #fdf2f8);
-            border-radius: 10px;
-            padding: min(4vw, 25px);
-            position: relative;
-            box-shadow: 3px 3px 10px rgba(0,0,0,0.1);
-            border: clamp(1px, 0.3vw, 2px) dashed #f9a8d4;
-            transform: rotate(-1deg);
-            max-width: 90%;
-            margin: 0 auto;
-        }
-        
-        .quote-text {
-            font-size: clamp(1.4rem, 2.5vw, 1.8rem);
-            line-height: 1.6;
-            color: #555;
-            font-family: 'Shadows Into Light', cursive;
-            margin-bottom: clamp(8px, 1.5vw, 15px);
-        }
-        
-        .quote-author {
-            text-align: right;
-            font-style: italic;
-            color: #d14e72;
-            font-weight: bold;
-            font-size: clamp(1rem, 2vw, 1.2rem);
-        }
-        
-        .photo-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
-            gap: min(3vw, 20px);
-            margin: min(3vw, 20px) auto;
-            max-width: 90%;
-        }
-        
-        .photo-frame {
-            height: clamp(100px, 20vw, 150px);
-            background: linear-gradient(135deg, #c7d2fe, #ddd6fe);
-            border-radius: 8px;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            font-size: clamp(2rem, 4vw, 3rem);
-            color: #7e22ce;
-            position: relative;
-            overflow: hidden;
-            transform: rotate(-2deg);
-            box-shadow: 3px 3px 8px rgba(0,0,0,0.1);
-        }
-        
-        .photo-frame:nth-child(even) {
-            transform: rotate(2deg);
-        }
-        
-        .photo-frame::before {
-            content: "";
-            position: absolute;
-            top: 5px;
-            left: 5px;
-            right: 5px;
-            bottom: 5px;
-            border: clamp(1px, 0.3vw, 2px) dashed #7e22ce;
-            border-radius: 6px;
-        }
-        
-        .memory-item {
-            background: white;
-            padding: min(4vw, 25px);
-            border-radius: 10px;
-            border-left: clamp(5px, 1.5vw, 8px) solid #fcd34d;
-            box-shadow: 3px 3px 10px rgba(0,0,0,0.1);
-            max-width: 90%;
-            margin: 0 auto;
-        }
-        
-        .memory-title {
-            font-size: clamp(1.4rem, 2.5vw, 1.8rem);
-            color: #ff6b9c;
-            margin-bottom: clamp(5px, 1vw, 10px);
-            font-family: 'Shadows Into Light', cursive;
-        }
-        
-        .memory-content {
-            font-size: clamp(1.1rem, 2vw, 1.4rem);
-            color: #555;
-            line-height: 1.6;
-        }
-        
-        .sticker {
-            position: absolute;
-            font-size: clamp(1.8rem, 4vw, 3rem);
-            opacity: 0.7;
-            z-index: 0;
-            animation: float 4s ease-in-out infinite;
-        }
-        
-        .sticker-1 { top: 10%; left: 10%; color: #f87171; animation-delay: 0s; }
-        .sticker-2 { top: 15%; right: 15%; color: #60a5fa; animation-delay: 0.5s; }
-        .sticker-3 { bottom: 20%; left: 20%; color: #fbbf24; animation-delay: 1s; }
-        .sticker-4 { bottom: 15%; right: 10%; color: #34d399; animation-delay: 1.5s; }
-        
-        .tape {
-            position: absolute;
-            width: clamp(50px, 10vw, 80px);
-            height: clamp(15px, 3.5vw, 30px);
-            background: rgba(255, 255, 255, 0.7);
-            opacity: 0.8;
-            transform: rotate(-45deg);
-            z-index: 5;
-        }
-        
-        .tape-1 { top: -15px; left: 30%; }
-        .tape-2 { top: -15px; right: 30%; }
-        
-        .navigation {
-            position: absolute;
-            bottom: min(3vw, 20px);
-            left: 0;
-            right: 0;
-            display: flex;
-            justify-content: center;
-            gap: min(3vw, 20px);
-            z-index: 10;
-        }
-        
-        .nav-btn {
-            background: linear-gradient(to bottom, #f9a8d4, #f472b6);
-            border: none;
-            color: white;
-            font-family: 'Patrick Hand', cursive;
-            font-size: clamp(1rem, 2vw, 1.4rem);
-            padding: clamp(8px, 1.5vw, 12px) clamp(20px, 4vw, 30px);
-            border-radius: 30px;
-            cursor: pointer;
-            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
-            transition: all 0.3s ease;
-        }
-        
-        .nav-btn:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 6px 12px rgba(0,0,0,0.2);
-        }
-        
-        .nav-btn:disabled {
-            opacity: 0.5;
-            cursor: not-allowed;
-            transform: none;
-        }
-        
+
+        .navigation,
         .page-counter {
-            position: absolute;
-            bottom: min(3vw, 25px);
-            right: min(3vw, 25px);
-            background: rgba(255, 255, 255, 0.7);
-            padding: clamp(5px, 1vw, 8px) clamp(10px, 3vw, 20px);
-            border-radius: 20px;
-            font-size: clamp(1rem, 2vw, 1.3rem);
-            color: #d14e72;
-            font-weight: bold;
+          display: none;
         }
-        
-        .wish-form {
-            display: flex;
-            flex-direction: column;
-            gap: min(3vw, 20px);
-            max-width: 90%;
-            margin: 0 auto;
-            background: white;
-            padding: min(4vw, 25px);
-            border-radius: 15px;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+      }
+      .image-container {
+        width: 100%;
+        height: clamp(120px, 20vw, 180px);
+        overflow: hidden;
+        border-radius: 3px;
+        background: linear-gradient(45deg, #f5f7fa, #e4e7eb);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        position: relative;
+      }
+
+      .image-container img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        transition: transform 0.5s ease;
+      }
+
+      .polaroid:hover .image-container img {
+        transform: scale(1.05);
+      }
+      /* Animation for images */
+      @keyframes floatImage {
+        0% {
+          transform: translateY(0);
         }
-        
-        .form-input {
-            padding: clamp(10px, 1.5vw, 15px);
-            border-radius: 8px;
-            border: clamp(1px, 0.3vw, 2px) dashed #d4a76a;
-            background: rgba(255, 255, 255, 0.8);
-            font-family: 'Patrick Hand', cursive;
-            font-size: clamp(1rem, 2vw, 1.3rem);
+        50% {
+          transform: translateY(-10px);
         }
-        
-        .form-input:focus {
-            outline: none;
-            border-style: solid;
-            border-color: #f472b6;
+        100% {
+          transform: translateY(0);
         }
-        
-        .submit-btn {
-            background: linear-gradient(to bottom, #a78bfa, #8b5cf6);
-            color: white;
-            border: none;
-            padding: clamp(10px, 1.5vw, 15px);
-            border-radius: 8px;
-            font-family: 'Patrick Hand', cursive;
-            font-size: clamp(1.1rem, 2.2vw, 1.5rem);
-            cursor: pointer;
-            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+      }
+
+      .polaroid {
+        animation: floatImage 8s ease-in-out infinite;
+      }
+
+      .polaroid:nth-child(2) {
+        animation-delay: 2s;
+      }
+
+      /* Adjustments for smaller screens */
+      @media (min-width: 768px) {
+        .image-gallery {
+          grid-template-columns: 1fr 1fr;
+          gap: min(4vw, 40px);
         }
-        
-        .fun-fact {
-            background: white;
-            padding: min(3vw, 20px);
-            border-radius: 10px;
-            border: clamp(1px, 0.5vw, 3px) dotted #a2d2ff;
-            max-width: 90%;
-            margin: 0 auto;
-            text-align: center;
+
+        .page-content {
+          flex-direction: column;
         }
-        
-        .fact-title {
-            font-size: clamp(1.4rem, 2.5vw, 1.8rem);
-            color: #ff6b9c;
-            margin-bottom: clamp(5px, 1vw, 10px);
-            font-family: 'Shadows Into Light', cursive;
-        }
-        
-        .fact-content {
-            font-size: clamp(1.1rem, 2vw, 1.4rem);
-            color: #555;
-            line-height: 1.6;
-        }
-        
-        .gift-box {
-            text-align: center;
-            margin: min(3vw, 20px) 0;
-        }
-        
-        .gift-icon {
-            font-size: clamp(3rem, 8vw, 5rem);
-            color: #ff6b9c;
-            animation: pulse 2s infinite;
-        }
-        
-        /* Landscape orientation adjustments */
-        @media (orientation: landscape) and (max-height: 500px) {
-            .scrapbook {
-                min-height: 95vh;
-            }
-            
-            .cover-title {
-                font-size: clamp(2rem, 5vw, 3rem);
-                margin-bottom: 5px;
-            }
-            
-            .cover-subtitle {
-                font-size: clamp(1.2rem, 2.5vw, 1.8rem);
-                margin-bottom: 15px;
-            }
-            
-            .celebration-container {
-                margin: 10px 0;
-            }
-            
-            .cake-icon {
-                font-size: clamp(3rem, 8vw, 5rem);
-            }
-        }
-        
-        /* Print styles */
-        @media print {
-            body {
-                background: white;
-                padding: 0;
-            }
-            
-            .scrapbook {
-                box-shadow: none;
-                border: none;
-                max-width: 100%;
-                height: auto;
-            }
-            
-            .book-cover {
-                position: relative;
-                transform: none !important;
-                box-shadow: none;
-                page-break-after: always;
-            }
-            
-            .page {
-                position: static;
-                display: block !important;
-                page-break-after: always;
-            }
-            
-            .navigation, .page-counter {
-                display: none;
-            }
-        }
+      }
     </style>
-</head>
-<body>
+  </head>
+  <body>
     <div class="scrapbook">
-        <!-- Enhanced Book Cover -->
-        <div class="book-cover closed" id="book-cover">
-            <!-- Balloons -->
-            <div class="balloon">🎈</div>
-            <div class="balloon">🎈</div>
-            <div class="balloon">🎈</div>
-            <div class="balloon">🎈</div>
-            <div class="balloon">🎈</div>
-            <div class="balloon">🎈</div>
-            
-            <!-- Confetti -->
-            <div class="confetti"></div>
-            <div class="confetti"></div>
-            <div class="confetti"></div>
-            <div class="confetti"></div>
-            <div class="confetti"></div>
-            <div class="confetti"></div>
-            <div class="confetti"></div>
-            <div class="confetti"></div>
-            <div class="confetti"></div>
-            
-            <div class="cover-content">
-                <h1 class="cover-title">Happy Birthday Chloe!</h1>
-                <p class="cover-subtitle">A Special Scrapbook For An Amazing College Girl</p>
-                
-                <div class="celebration-container">
-                    <div class="gift-icon">🎁</div>
-                    <div class="cake-icon">🎂</div>
-                    <div class="gift-icon">🎁</div>
-                </div>
-                
-                <button class="open-btn" id="open-book">
-                    <i class="fas fa-book-open"></i> Open Scrapbook
-                </button>
-            </div>
+      <!-- Enhanced Book Cover -->
+      <div class="book-cover closed" id="book-cover">
+        <!-- Balloons -->
+        <div class="balloon">🎈</div>
+        <div class="balloon">🎈</div>
+        <div class="balloon">🎈</div>
+        <div class="balloon">🎈</div>
+        <div class="balloon">🎈</div>
+        <div class="balloon">🎈</div>
+
+        <!-- Confetti -->
+        <div class="confetti"></div>
+        <div class="confetti"></div>
+        <div class="confetti"></div>
+        <div class="confetti"></div>
+        <div class="confetti"></div>
+        <div class="confetti"></div>
+        <div class="confetti"></div>
+        <div class="confetti"></div>
+        <div class="confetti"></div>
+
+        <div class="cover-content">
+          <h1 class="cover-title">Happy Birthday Chloe!</h1>
+          <p class="cover-subtitle">A Special Scrapbook For An Amazing Girl</p>
+
+          <div class="celebration-container">
+            <div class="gift-icon">🎁</div>
+            <div class="cake-icon">🎂</div>
+            <div class="gift-icon">🎁</div>
+          </div>
+
+          <button class="open-btn" id="open-book">
+            <i class="fas fa-book-open"></i> Open Scrapbook
+          </button>
         </div>
-        
-        <!-- Pages Container -->
-        <div class="pages-container">
-            <!-- Page 1: Welcome -->
-            <div class="page active" id="page-1">
-                <div class="tape tape-1"></div>
-                <div class="tape tape-2"></div>
-                <i class="fas fa-heart sticker sticker-1"></i>
-                <i class="fas fa-star sticker sticker-2"></i>
-                <i class="fas fa-crown sticker sticker-3"></i>
-                <i class="fas fa-music sticker sticker-4"></i>
-                
-                <div class="page-header">
-                    <h1 class="page-title">Happy 21st Birthday!</h1>
+      </div>
+
+      <!-- Pages Container -->
+      <div class="pages-container">
+        <!-- Page 1: Welcome -->
+        <div class="page active" id="page-1">
+          <div class="tape tape-1"></div>
+          <div class="tape tape-2"></div>
+          <i class="fas fa-heart sticker sticker-1"></i>
+          <i class="fas fa-star sticker sticker-2"></i>
+          <i class="fas fa-crown sticker sticker-3"></i>
+          <i class="fas fa-music sticker sticker-4"></i>
+
+          <div class="page-header">
+            <h1 class="page-title">Happy 23st Birthday!</h1>
+          </div>
+
+          <div class="page-content">
+            <!-- Image Gallery -->
+            <div class="image-gallery">
+              <div class="polaroid" style="--rotation: -3deg">
+                <div class="image-container">
+                  <img src="Assests/img1.jpg" />
                 </div>
-                
-                <div class="page-content">
-                    <div class="wish-card">
-                        <p class="wish-text">To the most amazing college girl on her special day! May your birthday be as wonderful and bright as you are. Here's to a year filled with joy, success, and unforgettable memories!</p>
-                        <div class="wish-author">- Your Friends</div>
-                    </div>
-                    
-                    <div class="quote-card">
-                        <p class="quote-text">"Today you are you! That is truer than true! There is no one alive who is you-er than you!"</p>
-                        <div class="quote-author">- Dr. Seuss</div>
-                    </div>
-                    
-                    <div class="gift-box">
-                        <div class="gift-icon">🎁</div>
-                        <p style="font-size: clamp(1.1rem, 2vw, 1.5rem); color: #d14e72; margin-top: 10px;">Swipe right for more birthday surprises!</p>
-                    </div>
+                <div class="image-caption">Celebration Time!</div>
+              </div>
+
+              <div class="polaroid" style="--rotation: 2deg">
+                <div class="image-container">
+                  <img
+                    src="https://images.unsplash.com/photo-1578985545062-69928b1d9587?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=500&q=80"
+                    alt="Birthday Cake"
+                  />
                 </div>
+                <div class="image-caption">Delicious Cake</div>
+              </div>
             </div>
-            
-            <!-- Page 2: Birthday Wishes -->
-            <div class="page" id="page-2">
-                <div class="page-header">
-                    <h1 class="page-title">Birthday Wishes</h1>
-                </div>
-                
-                <div class="page-content">
-                    <div class="wish-card">
-                        <p class="wish-text">Happy Birthday Chloe! You light up every room you enter. Wishing you a day as amazing as you are! 🎉</p>
-                        <div class="wish-author">- Sarah</div>
-                    </div>
-                    
-                    <div class="wish-card">
-                        <p class="wish-text">To my favorite study buddy! May your birthday be filled with laughter, joy, and no homework! 😉</p>
-                        <div class="wish-author">- Emily</div>
-                    </div>
-                    
-                    <div class="wish-card">
-                        <p class="wish-text">Happy 21st! Hope your birthday is as epic as our late-night pizza runs! 🍕🎂</p>
-                        <div class="wish-author">- Mike</div>
-                    </div>
-                    
-                    <div class="wish-card">
-                        <p class="wish-text">Wishing the smartest girl in class a birthday full of A+ moments! 📚✨</p>
-                        <div class="wish-author">- Alex</div>
-                    </div>
-                </div>
+            <div class="wish-card">
+              <p class="wish-text">
+                To the most amazing girl on her special day! May your birthday
+                be as wonderful and bright as you are. Here's to a year filled
+                with joy, success, and unforgettable memories!
+              </p>
             </div>
-            
-            <!-- Page 3: Quotes -->
-            <div class="page" id="page-3">
-                <div class="page-header">
-                    <h1 class="page-title">Inspirational Quotes</h1>
-                </div>
-                
-                <div class="page-content">
-                    <div class="quote-card">
-                        <p class="quote-text">"The future belongs to those who believe in the beauty of their dreams."</p>
-                        <div class="quote-author">- Eleanor Roosevelt</div>
-                    </div>
-                    
-                    <div class="quote-card">
-                        <p class="quote-text">"You are braver than you believe, stronger than you seem, and smarter than you think."</p>
-                        <div class="quote-author">- A.A. Milne</div>
-                    </div>
-                    
-                    <div class="quote-card">
-                        <p class="quote-text">"Don't watch the clock; do what it does. Keep going."</p>
-                        <div class="quote-author">- Sam Levenson</div>
-                    </div>
-                    
-                    <div class="quote-card">
-                        <p class="quote-text">"The only way to do great work is to love what you do."</p>
-                        <div class="quote-author">- Steve Jobs</div>
-                    </div>
-                </div>
+
+            <div class="quote-card">
+              <p class="quote-text">
+                "Today you are you! That is truer than true! There is no one
+                alive who is you-er than you!"
+              </p>
             </div>
-            
-            <!-- Page 4: Memories -->
-            <div class="page" id="page-4">
-                <div class="page-header">
-                    <h1 class="page-title">College Memories</h1>
-                </div>
-                
-                <div class="page-content">
-                    <div class="photo-grid">
-                        <div class="photo-frame">
-                            <i class="fas fa-graduation-cap"></i>
-                        </div>
-                        <div class="photo-frame">
-                            <i class="fas fa-coffee"></i>
-                        </div>
-                        <div class="photo-frame">
-                            <i class="fas fa-book"></i>
-                        </div>
-                        <div class="photo-frame">
-                            <i class="fas fa-music"></i>
-                        </div>
-                        <div class="photo-frame">
-                            <i class="fas fa-laptop"></i>
-                        </div>
-                        <div class="photo-frame">
-                            <i class="fas fa-umbrella-beach"></i>
-                        </div>
-                    </div>
-                    
-                    <div class="memory-item">
-                        <h2 class="memory-title">Freshman Year Adventures</h2>
-                        <p class="memory-content">Remember our first week on campus? Getting lost in every building, staying up all night talking in the dorm, and that hilarious incident at the cafeteria! Those were the days.</p>
-                    </div>
-                    
-                    <div class="memory-item">
-                        <h2 class="memory-title">Spring Festival Fun</h2>
-                        <p class="memory-content">The campus spring festival was unforgettable! Dancing until our feet hurt, trying every food truck, and that amazing concert under the stars. We took so many silly photos that night!</p>
-                    </div>
-                </div>
-            </div>
-            
-            <!-- Page 5: Fun Facts -->
-            <div class="page" id="page-5">
-                <div class="page-header">
-                    <h1 class="page-title">Fun Facts About You</h1>
-                </div>
-                
-                <div class="page-content">
-                    <div class="fun-fact">
-                        <h2 class="fact-title">Coffee Connoisseur ☕</h2>
-                        <p class="fact-content">You can identify coffee types blindfolded! Your perfect latte art skills are legendary on campus.</p>
-                    </div>
-                    
-                    <div class="fun-fact">
-                        <h2 class="fact-title">Midnight Snacker 🌙</h2>
-                        <p class="fact-content">No one knows the campus vending machines better than you. Late-night study sessions = snack heaven!</p>
-                    </div>
-                    
-                    <div class="fun-fact">
-                        <h2 class="fact-title">Dance Floor Queen 💃</h2>
-                        <p class="fact-content">From dorm parties to formal events, you're always the first on the dance floor and the last to leave!</p>
-                    </div>
-                    
-                    <div class="fun-fact">
-                        <h2 class="fact-title">Bookworm Extraordinaire 📚</h2>
-                        <p class="fact-content">You've read more books this semester than most people read in a year. Your bookshelf is a work of art!</p>
-                    </div>
-                </div>
-            </div>
+          </div>
         </div>
-        
-        <div class="navigation">
-            <button class="nav-btn" id="prev-btn">Previous</button>
-            <button class="nav-btn" id="next-btn">Next</button>
+        <div class="page" id="page-2">
+          <div class="tape tape-1"></div>
+          <div class="tape tape-2"></div>
+          <i class="fas fa-heart sticker sticker-1"></i>
+          <i class="fas fa-star sticker sticker-2"></i>
+
+          <div class="page-header">
+            <h1 class="page-title">Our Memories</h1>
+          </div>
+
+          <div class="page-content">
+            <div class="image-gallery">
+              <div class="polaroid" style="--rotation: -1deg">
+                <div class="image-container">
+                  <img src="Assests/img2.jpg" alt="Special moment" />
+                </div>
+                <div class="image-caption">Our First Trip</div>
+              </div>
+
+              <div class="polaroid" style="--rotation: 4deg">
+                <div class="image-container">
+                  <img src="Assests/img3.jpg" alt="Special moment" />
+                </div>
+                <div class="image-caption">Beach Day</div>
+              </div>
+            </div>
+            <div class="quote-card romantic">
+              <p class="romantic-text">
+                "Every moment with you feels like a beautiful dream I never want
+                to wake up from."
+              </p>
+            </div>
+          </div>
         </div>
-        
-        <div class="page-counter" id="page-counter">Page 1 of 5</div>
+
+        <!-- Page 3: New Content -->
+        <div class="page" id="page-3">
+          <div class="tape tape-1"></div>
+          <div class="tape tape-2"></div>
+          <i class="fas fa-heart sticker sticker-1"></i>
+          <i class="fas fa-star sticker sticker-2"></i>
+
+          <div class="page-header">
+            <h1 class="page-title">Special Moments</h1>
+          </div>
+
+          <div class="page-content">
+            <div class="image-gallery">
+              <div class="polaroid" style="--rotation: 2deg">
+                <div class="image-container">
+                  <img src="Assests/img4.jpg" alt="Special moment" />
+                </div>
+                <div class="image-caption">Date Night</div>
+              </div>
+
+              <div class="polaroid" style="--rotation: -3deg">
+                <div class="image-container">
+                  <img src="Assests/img5.jpg" alt="Special moment" />
+                </div>
+                <div class="image-caption">Mountain Adventure</div>
+              </div>
+            </div>
+            <div class="quote-card romantic">
+              <p class="romantic-text">
+                "Your smile is my favorite thing in the world. Never stop
+                shining."
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Page 4: New Content -->
+        <div class="page" id="page-4">
+          <div class="tape tape-1"></div>
+          <div class="tape tape-2"></div>
+          <i class="fas fa-heart sticker sticker-1"></i>
+          <i class="fas fa-star sticker sticker-2"></i>
+
+          <div class="page-header">
+            <h1 class="page-title">Adventures Together</h1>
+          </div>
+
+          <div class="page-content">
+            <div class="image-gallery">
+              <div class="polaroid" style="--rotation: 2deg">
+                <div class="image-container">
+                  <img src="Assests/img6.jpg" alt="Special moment" />
+                </div>
+                <div class="image-caption">Festival Fun</div>
+              </div>
+
+              <div class="polaroid" style="--rotation: -3deg">
+                <div class="image-container">
+                  <img src="Assests/img7.jpg" alt="Special moment" />
+                </div>
+                <div class="image-caption">Sunset Views</div>
+              </div>
+            </div>
+            <div class="quote-card romantic">
+              <p class="romantic-text">
+                "With you, every ordinary moment becomes an extraordinary
+                memory."
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Page 5: New Content -->
+        <div class="page" id="page-5">
+          <div class="tape tape-1"></div>
+          <div class="tape tape-2"></div>
+          <i class="fas fa-heart sticker sticker-1"></i>
+          <i class="fas fa-star sticker sticker-2"></i>
+
+          <div class="page-header">
+            <h1 class="page-title">Sweet Memories</h1>
+          </div>
+
+          <div class="page-content">
+            <div class="image-gallery">
+              <div class="polaroid" style="--rotation: -4deg">
+                <div class="image-container">
+                  <img src="Assests/img8.jpg" alt="Special moment" />
+                </div>
+                <div class="image-caption">Coffee Date</div>
+              </div>
+
+              <div class="polaroid" style="--rotation: 2deg">
+                <div class="image-container">
+                  <img src="Assests/img9.jpg" alt="Special moment" />
+                </div>
+                <div class="image-caption">City Lights</div>
+              </div>
+            </div>
+            <div class="quote-card romantic">
+              <p class="romantic-text">
+                "I fall in love with you more every day. Happy birthday to my
+                forever love."
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Page 6: New Content -->
+        <div class="page" id="page-6">
+          <div class="tape tape-1"></div>
+          <div class="tape tape-2"></div>
+          <i class="fas fa-heart sticker sticker-1"></i>
+          <i class="fas fa-star sticker sticker-2"></i>
+
+          <div class="page-header">
+            <h1 class="page-title">My Promise</h1>
+          </div>
+
+          <div class="page-content">
+            <div class="image-gallery">
+              <div class="polaroid" style="--rotation: -1deg">
+                <div class="image-container">
+                  <img src="Assests/img10.jpg" alt="Special moment" />
+                </div>
+                <div class="image-caption">Anniversary</div>
+              </div>
+
+              <div class="polaroid" style="--rotation: 3deg">
+                <div class="image-container">
+                  <img src="Assests/img11.jpg" alt="Special moment" />
+                </div>
+                <div class="image-caption">Forever Us</div>
+              </div>
+            </div>
+            <div class="quote-card romantic">
+              <p class="romantic-text">
+                "I promise to love you today, tomorrow, and all the days after.
+                Happy Birthday my love!"
+              </p>
+            </div>
+            <div class="wish-card">
+              <p class="wish-text">
+                Thank you for being the most amazing girlfriend. I love you more
+                than words can say. Here's to many more birthdays together!
+              </p>
+              <p class="wish-author">With all my love,</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="navigation">
+        <button class="nav-btn" id="prev-btn">Previous</button>
+        <button class="nav-btn" id="next-btn">Next</button>
+      </div>
+
+      <div class="page-counter" id="page-counter">Page 1 of 6</div>
     </div>
 
     <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            const bookCover = document.getElementById('book-cover');
-            const openBtn = document.getElementById('open-book');
-            const pages = document.querySelectorAll('.page');
-            const prevBtn = document.getElementById('prev-btn');
-            const nextBtn = document.getElementById('next-btn');
-            const pageCounter = document.getElementById('page-counter');
-            let currentPage = 1;
-            const totalPages = pages.length;
-            
-            // Initially hide navigation
-            document.querySelector('.navigation').style.display = 'none';
-            document.querySelector('.page-counter').style.display = 'none';
-            
-            // Open the book
-            openBtn.addEventListener('click', function() {
-                // Add confetti effect when opening
-                createConfetti();
-                
-                // Open after a short delay
-                setTimeout(() => {
-                    bookCover.classList.remove('closed');
-                    bookCover.classList.add('open');
-                    
-                    // Show navigation after a delay
-                    setTimeout(() => {
-                        document.querySelector('.navigation').style.display = 'flex';
-                        document.querySelector('.page-counter').style.display = 'block';
-                    }, 800);
-                }, 500);
-            });
-            
-            // Navigate between pages
-            function goToPage(pageNumber) {
-                if (pageNumber < 1 || pageNumber > totalPages) return;
-                
-                // Hide all pages
-                pages.forEach(page => {
-                    page.classList.remove('active');
-                });
-                
-                // Show the requested page
-                document.getElementById(`page-${pageNumber}`).classList.add('active');
-                
-                currentPage = pageNumber;
-                updatePageCounter();
-                
-                // Update button states
-                prevBtn.disabled = (currentPage === 1);
-                nextBtn.disabled = (currentPage === totalPages);
-            }
-            
-            prevBtn.addEventListener('click', () => {
-                if (currentPage > 1) {
-                    goToPage(currentPage - 1);
-                }
-            });
-            
-            nextBtn.addEventListener('click', () => {
-                if (currentPage < totalPages) {
-                    goToPage(currentPage + 1);
-                }
-            });
-            
-            function updatePageCounter() {
-                pageCounter.textContent = `Page ${currentPage} of ${totalPages}`;
-            }
-            
-            // Form submission
-            const wishForm = document.querySelector('.wish-form');
-            wishForm.addEventListener('submit', function(e) {
-                e.preventDefault();
-                alert('Thank you for your birthday wish! It has been added to the scrapbook.');
-                wishForm.reset();
-            });
-            
-            // Initialize page counter
-            updatePageCounter();
-            prevBtn.disabled = true;
-            
-            // Add keyboard navigation
-            document.addEventListener('keydown', function(e) {
-                if (e.key === 'ArrowLeft' && currentPage > 1) {
-                    goToPage(currentPage - 1);
-                } else if (e.key === 'ArrowRight' && currentPage < totalPages) {
-                    goToPage(currentPage + 1);
-                }
-            });
-            
-            // Function to create confetti effect
-            function createConfetti() {
-                const confettiCount = 50;
-                const container = document.querySelector('.book-cover');
-                
-                for (let i = 0; i < confettiCount; i++) {
-                    const confetti = document.createElement('div');
-                    confetti.className = 'confetti';
-                    
-                    // Random position
-                    confetti.style.left = Math.random() * 100 + '%';
-                    
-                    // Random colors
-                    const colors = ['#ff6b6b', '#4ecdc4', '#ffd166', '#6a0572', '#1a936f', '#ffd700'];
-                    confetti.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
-                    
-                    // Random size
-                    const size = Math.random() * 10 + 5;
-                    confetti.style.width = size + 'px';
-                    confetti.style.height = size + 'px';
-                    
-                    // Random rotation
-                    confetti.style.transform = `rotate(${Math.random() * 360}deg)`;
-                    
-                    // Random animation duration
-                    const duration = Math.random() * 3 + 2;
-                    confetti.style.animation = `fall ${duration}s linear forwards`;
-                    
-                    container.appendChild(confetti);
-                    
-                    // Remove after animation completes
-                    setTimeout(() => {
-                        confetti.remove();
-                    }, duration * 1000);
-                }
-            }
+      document.addEventListener("DOMContentLoaded", function () {
+        const bookCover = document.getElementById("book-cover");
+        const openBtn = document.getElementById("open-book");
+        const pages = document.querySelectorAll(".page");
+        const prevBtn = document.getElementById("prev-btn");
+        const nextBtn = document.getElementById("next-btn");
+        const pageCounter = document.getElementById("page-counter");
+        let currentPage = 1;
+        const totalPages = pages.length;
+
+        // Initially hide navigation
+        document.querySelector(".navigation").style.display = "none";
+        document.querySelector(".page-counter").style.display = "none";
+
+        // Open the book
+        openBtn.addEventListener("click", function () {
+          // Add confetti effect when opening
+          createConfetti();
+
+          // Open after a short delay
+          setTimeout(() => {
+            bookCover.classList.remove("closed");
+            bookCover.classList.add("open");
+
+            // Show navigation after a delay
+            setTimeout(() => {
+              document.querySelector(".navigation").style.display = "flex";
+              document.querySelector(".page-counter").style.display = "block";
+            }, 800);
+          }, 500);
         });
+
+        // Navigate between pages
+        function goToPage(pageNumber) {
+          if (pageNumber < 1 || pageNumber > totalPages) return;
+
+          // Hide all pages
+          pages.forEach((page) => {
+            page.classList.remove("active");
+          });
+
+          // Show the requested page
+          document.getElementById(`page-${pageNumber}`).classList.add("active");
+
+          currentPage = pageNumber;
+          updatePageCounter();
+
+          // Update button states
+          prevBtn.disabled = currentPage === 1;
+          nextBtn.disabled = currentPage === totalPages;
+        }
+
+        prevBtn.addEventListener("click", () => {
+          if (currentPage > 1) {
+            goToPage(currentPage - 1);
+          }
+        });
+
+        nextBtn.addEventListener("click", () => {
+          if (currentPage < totalPages) {
+            goToPage(currentPage + 1);
+          }
+        });
+
+        function updatePageCounter() {
+          pageCounter.textContent = `Page ${currentPage} of ${totalPages}`;
+        }
+
+        // Initialize page counter
+        updatePageCounter();
+        prevBtn.disabled = true;
+
+        // Add keyboard navigation
+        document.addEventListener("keydown", function (e) {
+          if (e.key === "ArrowLeft" && currentPage > 1) {
+            goToPage(currentPage - 1);
+          } else if (e.key === "ArrowRight" && currentPage < totalPages) {
+            goToPage(currentPage + 1);
+          }
+        });
+
+        // Function to create confetti effect
+        function createConfetti() {
+          const confettiCount = 50;
+          const container = document.querySelector(".book-cover");
+
+          for (let i = 0; i < confettiCount; i++) {
+            const confetti = document.createElement("div");
+            confetti.className = "confetti";
+
+            // Random position
+            confetti.style.left = Math.random() * 100 + "%";
+
+            // Random colors
+            const colors = [
+              "#ff6b6b",
+              "#4ecdc4",
+              "#ffd166",
+              "#6a0572",
+              "#1a936f",
+              "#ffd700",
+            ];
+            confetti.style.backgroundColor =
+              colors[Math.floor(Math.random() * colors.length)];
+
+            // Random size
+            const size = Math.random() * 10 + 5;
+            confetti.style.width = size + "px";
+            confetti.style.height = size + "px";
+
+            // Random rotation
+            confetti.style.transform = `rotate(${Math.random() * 360}deg)`;
+
+            // Random animation duration
+            const duration = Math.random() * 3 + 2;
+            confetti.style.animation = `fall ${duration}s linear forwards`;
+
+            container.appendChild(confetti);
+
+            // Remove after animation completes
+            setTimeout(() => {
+              confetti.remove();
+            }, duration * 1000);
+          }
+        }
+      });
     </script>
-</body>
+  </body>
 </html>
